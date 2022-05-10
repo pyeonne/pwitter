@@ -19,9 +19,8 @@ app.use((req, res, next) => {
 });
 
 app.use((error, req, res, next) => {
-  console.log(error);
+  console.error(error);
   res.sendStatus(500);
 });
 
-app.use(error);
 app.listen(8080);
