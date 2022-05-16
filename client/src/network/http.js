@@ -1,13 +1,13 @@
 export default class HttpClient {
-  constructor(baseURL) {
+  constructor(baseURL, authErrorEventsBus) {
     this.baseURL = baseURL;
+    this.authErrorEventsBus = authErrorEventsBus;
   }
 
   async fetch(url, options) {
     const res = await fetch(`${this.baseURL}${url}`, {
       ...options,
-      headers: { "Content-Type": "application/json" },
-      ...options.headers,
+      headers: { "Content-Type": "application/json", ...options.headers },
     });
     let data;
     try {
@@ -16,10 +16,15 @@ export default class HttpClient {
       console.error(error);
     }
 
-    if (res.status > 299 || res.stats < 200) {
+    if (res.status > 299 || res.status < 200) {
       const message =
         data && data.message ? data.message : "Something went wrong!";
-      throw new Error(message);
+      const error = new Error(message);
+      if (res.status === 401) {
+        this.authErrorEventsBus.notify(error);
+        return;
+      }
+      return error;
     }
     return data;
   }

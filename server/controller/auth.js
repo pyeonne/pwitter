@@ -3,8 +3,8 @@ import bcrypt from 'bcrypt';
 import * as userRepository from '../data/auth.js';
 
 // TODO: Make it secure!
-const jwtSecretKey = 'ER@mJ!tgici^l#QBnJat6eLPVZdPEvEl';
-const jwtExpiresInDays = '2d';
+const jwtSecretKey = 'F2dN7x8HVzBWaQuEEDnhsvHXRWqAR63z';
+const jwtExpiresInDays = '2';
 const bcryptSaltRounds = 12;
 
 export async function signup(req, res) {
