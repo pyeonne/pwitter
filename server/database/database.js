@@ -1,17 +1,26 @@
-import { MongoClient } from 'mongodb';
+import Mongoose from 'mongoose';
 import { config } from '../config.js';
 
-let db;
 export async function connectDB() {
-  return MongoClient.connect(config.db.host) //
-    .then((client) => {
-      db = client.db();
-    });
+  return (
+    Mongoose.connect(config.db.host),
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false,
+    }
+  );
 }
 
-export function getUsers() {
-  return db.collection('users');
+export function useVirtualId(schema) {
+  schema.virtual('id').get(function () {
+    return this._id.toString();
+  });
+  schema.set('toJSON', { virtuals: true });
+  schema.set('toObject', { virtuals: true });
 }
+
+// TODO(Pyeonne): Delete blow
 
 export function getTweets() {
   return db.collection('tweets');
