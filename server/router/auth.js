@@ -36,6 +36,9 @@ router.post('/signup', validateSignup, authController.signup);
 // * POST /auth/login
 router.post('/login', validateCredential, authController.login);
 
+// * POST /auth/logout
+router.post('/logout', authController.logout);
+
 // * GET /auth/me
 router.get('/me', isAuth, authController.me);
 
